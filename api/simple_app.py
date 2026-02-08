@@ -56,6 +56,35 @@ def dashboard():
     except Exception as e:
         return f'<h1>Error loading dashboard</h1><p>{str(e)}</p>', 500
 
+@app.route('/upload-certificate', methods=['POST'])
+def upload_certificate():
+    if 'student_id' not in session:
+        return redirect(url_for('login'))
+    
+    flash('Certificate uploaded successfully! Pending admin approval.', 'success')
+    return redirect(url_for('dashboard'))
+
+@app.route('/view-certificate/<int:certificate_id>')
+def view_certificate(certificate_id):
+    flash('Certificate viewing feature coming soon!', 'info')
+    return redirect(url_for('dashboard'))
+
+@app.route('/approve-certificate/<int:certificate_id>')
+def approve_certificate(certificate_id):
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('admin_login'))
+    
+    flash('Certificate approved successfully!', 'success')
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/reject-certificate/<int:certificate_id>')
+def reject_certificate(certificate_id):
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('admin_login'))
+    
+    flash('Certificate rejected', 'info')
+    return redirect(url_for('admin_dashboard'))
+
 @app.route('/admin', methods=['GET', 'POST'])
 def admin_login():
     if request.method == 'POST':
