@@ -1,0 +1,26 @@
+# Ignore files in Vercel deployment
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+instance/
+uploads/
+*.db
+.DS_Store
+.git/
+.vscode/
+.idea/
+*.log
+local_settings.py
+*.sqlite3
+test/
+tests/
+coverage/
+node_modules/
