@@ -7,12 +7,12 @@ template_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__fi
 app = Flask(__name__, template_folder=template_dir)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-here-change-in-production')
 
-# Simple in-memory data for demo
-students = {
-    '24UCS001': '24ucs001',
-    '24UCS002': '24ucs002',
-    '24UCS003': '24ucs003'
-}
+# Generate student credentials from 24UCS001 to 24UCS200
+students = {}
+for i in range(1, 201):
+    username = f'24UCS{i:03d}'
+    password = username.lower()
+    students[username] = password
 
 events = [
     {'id': 1, 'description': 'Paper Presentation in Symposium', 'max_marks': 2},
