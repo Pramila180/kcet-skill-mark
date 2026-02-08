@@ -84,51 +84,55 @@ class Certificate(db.Model):
 
 def initialize_database():
     """Initialize the database with events and students"""
-    with app.app_context():
-        db.create_all()
-        
-        # Add students if they don't exist
-        if not Student.query.first():
-            print("Initializing students...")
-            for i in range(1, 191):
-                username = f"24UCS{i:03d}"
-                student = Student(username=username, password=username.lower())
-                db.session.add(student)
-        
-        # Add events if they don't exist
-        events_data = [
-            ("Paper Presentation in Symposium", 2, "academic"),
-            ("Tech Competitions Participation (Quiz, Technical competitive events)", 1, "technical"),
-            ("Paper Presentation in NIT, IIT, PSG Tech, NITTR, VIT & Outside State paper presentation event", 5, "academic"),
-            ("Technical Competition Winning", 1, "technical"),
-            ("Proposal Submission (TNSCST, FAER, Hackathon, MSME, IE / Professional Chapter and Project Proposal Submission)", 4, "research"),
-            ("NPTEL Online Certification Courses Completion", 3, "certification"),
-            ("Professional Chapter Registration (CAY) excluding ISTE", 1, "professional"),
-            ("Paper Presentation & Conference", 3, "academic"),
-            ("Tech Mag article publishing newsletter", 1, "publication"),
-            ("Participating National Design contest", 3, "technical"),
-            ("Niral Thiruvizha / Local Industry project participation & solution generation through KCET Incubation Cell", 5, "industry"),
-            ("Entrepreneurship and Startups / Patent Filling / SCI / Scopus Journal", 5, "research"),
-            ("Approved Certification Courses from Dean (Academic Courses) example: Infosys, IBM, CCNA etc.,", 3, "certification"),
-            ("National / District / Zonal level Sports participation", 3, "sports"),
-            ("National / District / Zonal level Sports Winning / University team representation", 5, "sports"),
-            ("Yoga / NCC / NSS / UBA / Programmers Club / Standards Club / Tech Beats / Tech Band / Fine Arts - Active participation", 2, "extracurricular"),
-            ("SIH Participation", 2, "technical"),
-            ("Internship through Placement", 3, "professional")
-        ]
-        
-        if not Event.query.first():
-            print("Initializing events...")
-            for description, max_marks, category in events_data:
-                event = Event(description=description, max_marks=max_marks, category=category)
-                db.session.add(event)
-        
-        try:
-            db.session.commit()
-            print("Database initialized successfully!")
-        except Exception as e:
-            db.session.rollback()
-            print(f"Error initializing database: {e}")
+    try:
+        with app.app_context():
+            db.create_all()
+            
+            # Add students if they don't exist
+            if not Student.query.first():
+                print("Initializing students...")
+                for i in range(1, 191):
+                    username = f"24UCS{i:03d}"
+                    student = Student(username=username, password=username.lower())
+                    db.session.add(student)
+            
+            # Add events if they don't exist
+            events_data = [
+                ("Paper Presentation in Symposium", 2, "academic"),
+                ("Tech Competitions Participation (Quiz, Technical competitive events)", 1, "technical"),
+                ("Paper Presentation in NIT, IIT, PSG Tech, NITTR, VIT & Outside State paper presentation event", 5, "academic"),
+                ("Technical Competition Winning", 1, "technical"),
+                ("Proposal Submission (TNSCST, FAER, Hackathon, MSME, IE / Professional Chapter and Project Proposal Submission)", 4, "research"),
+                ("NPTEL Online Certification Courses Completion", 3, "certification"),
+                ("Professional Chapter Registration (CAY) excluding ISTE", 1, "professional"),
+                ("Paper Presentation & Conference", 3, "academic"),
+                ("Tech Mag article publishing newsletter", 1, "publication"),
+                ("Participating National Design contest", 3, "technical"),
+                ("Niral Thiruvizha / Local Industry project participation & solution generation through KCET Incubation Cell", 5, "industry"),
+                ("Entrepreneurship and Startups / Patent Filling / SCI / Scopus Journal", 5, "research"),
+                ("Approved Certification Courses from Dean (Academic Courses) example: Infosys, IBM, CCNA etc.,", 3, "certification"),
+                ("National / District / Zonal level Sports participation", 3, "sports"),
+                ("National / District / Zonal level Sports Winning / University team representation", 5, "sports"),
+                ("Yoga / NCC / NSS / UBA / Programmers Club / Standards Club / Tech Beats / Tech Band / Fine Arts - Active participation", 2, "extracurricular"),
+                ("SIH Participation", 2, "technical"),
+                ("Internship through Placement", 3, "professional")
+            ]
+            
+            if not Event.query.first():
+                print("Initializing events...")
+                for description, max_marks, category in events_data:
+                    event = Event(description=description, max_marks=max_marks, category=category)
+                    db.session.add(event)
+            
+            try:
+                db.session.commit()
+                print("Database initialized successfully!")
+            except Exception as e:
+                db.session.rollback()
+                print(f"Error initializing database: {e}")
+    except Exception as e:
+        print(f"Database initialization error: {e}")
+        # Don't crash the app
 
 def analyze_certificate(filename, event_description):
     """

@@ -14,7 +14,6 @@
   ],
   "env": {
     "FLASK_APP": "api/index.py",
-    "PYTHON_VERSION": "3.9",
-    "DATABASE_URL": "@database_url"
+    "PYTHON_VERSION": "3.9"
   }
 }
