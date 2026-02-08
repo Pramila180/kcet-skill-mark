@@ -7,6 +7,12 @@ from datetime import datetime
 import json
 from urllib.parse import urlparse
 
+# Add PostgreSQL support for Vercel
+try:
+    import psycopg2
+except ImportError:
+    psycopg2 = None
+
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -398,9 +404,11 @@ def health_check():
 with app.app_context():
     try:
         initialize_database()
+        print("Database initialized successfully!")
     except Exception as e:
-        print(f"Warning: Could not initialize database: {e}")
-        print("This might be normal on Vercel if PostgreSQL isn't set up yet.")
+        print(f"Warning: Database initialization failed: {e}")
+        print("This might be normal on first deployment.")
+        # Don't crash the app on database init failure
 
 # For local development
 if __name__ == '__main__':
