@@ -15,8 +15,5 @@
       "src": "/(.*)",
       "dest": "api/simple_app.py"
     }
-  ],
-  "env": {
-    "SECRET_KEY": "@secret_key"
-  }
+  ]
 }
