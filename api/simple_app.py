@@ -15,9 +15,9 @@ for i in range(1, 201):
     students[username] = password
 
 events = [
-    {'id': 1, 'description': 'Paper Presentation in Symposium', 'max_marks': 2},
-    {'id': 2, 'description': 'Tech Competitions Participation', 'max_marks': 1},
-    {'id': 3, 'description': 'NPTEL Online Certification', 'max_marks': 3}
+    {'id': 1, 'description': 'Paper Presentation in Symposium', 'max_marks': 2, 'category': 'academic'},
+    {'id': 2, 'description': 'Tech Competitions Participation', 'max_marks': 1, 'category': 'technical'},
+    {'id': 3, 'description': 'NPTEL Online Certification', 'max_marks': 3, 'category': 'certification'}
 ]
 
 @app.route('/')
