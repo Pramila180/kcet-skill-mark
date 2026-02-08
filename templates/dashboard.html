@@ -87,8 +87,35 @@
         .certificate-item {
             border: 1px solid #e9ecef;
             border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        .certificate-left {
+            flex: 1;
+        }
+        .certificate-right {
+            text-align: right;
+            min-width: 320px;
+        }
+        .certificate-title {
+            font-weight: 700;
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        .certificate-meta {
+            font-size: 13px;
+            color: #999;
+            line-height: 1.6;
+        }
+        .certificate-message {
+            color: #666;
+            font-size: 13px;
+            margin: 10px 0;
         }
         .status-approved {
             background: #d4edda;
@@ -97,6 +124,17 @@
             border-radius: 15px;
             font-size: 12px;
             font-weight: 600;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        .marks-badge {
+            background: #28a745;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
         }
         .status-rejected {
             background: #f8d7da;
@@ -107,17 +145,22 @@
             font-weight: 600;
         }
         .btn-view {
-            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            background: #17a2b8;
             border: none;
             border-radius: 8px;
             padding: 8px 20px;
             color: white;
             font-weight: 600;
-            transition: transform 0.2s;
+            transition: transform 0.2s, background 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 12px;
         }
         .btn-view:hover {
             transform: translateY(-2px);
-            background: linear-gradient(135deg, #138496 0%, #117a8b 100%);
+            background: #138496;
+            color: white;
+            text-decoration: none;
         }
         .status-pending {
             background: #fff3cd;
@@ -227,31 +270,31 @@
             {% if certificates %}
                 {% for certificate in certificates %}
                 <div class="certificate-item">
-                    <div class="row align-items-center">
-                        <div class="col-md-6">
-                            <strong>{{ certificate.event.description }}</strong><br>
-                            <small class="text-muted">File: {{ certificate.filename }}</small><br>
-                            <small class="text-muted">Uploaded: {{ certificate.upload_date.strftime('%d %b %Y, %I:%M %p') }}</small>
+                    <div class="certificate-left">
+                        <div class="certificate-title">{{ certificate.event.description }}</div>
+                        <div class="certificate-meta">
+                            File: {{ certificate.filename }}<br>
+                            Uploaded: {{ certificate.upload_date.strftime('%d %b %Y, %I:%M %p') }}
                         </div>
-                        <div class="col-md-6 text-end">
+                    </div>
+                    <div class="certificate-right">
+                        <div class="mb-2">
                             <span class="status-{{ certificate.status }}">
                                 {{ certificate.status.title() }}
                             </span>
                             {% if certificate.marks_allocated > 0 %}
-                                <span class="badge bg-success ms-2">+{{ certificate.marks_allocated }} marks</span>
+                                <span class="marks-badge">+{{ certificate.marks_allocated }} marks</span>
                             {% endif %}
-                            {% if certificate.remarks %}
-                                <div class="mt-2">
-                                    <small class="text-muted">{{ certificate.remarks }}</small>
-                                </div>
-                            {% endif %}
-                            <div class="mt-2">
-                                <a href="{{ url_for('view_certificate', certificate_id=certificate.id) }}" 
-                                   class="btn btn-info btn-sm" target="_blank">
-                                    <i class="fas fa-eye"></i> View Certificate
-                                </a>
-                            </div>
                         </div>
+                        {% if certificate.remarks %}
+                            <div class="certificate-message">
+                                {{ certificate.remarks }}
+                            </div>
+                        {% endif %}
+                        <a href="{{ url_for('view_certificate', certificate_id=certificate.id) }}" 
+                           class="btn btn-view btn-sm" target="_blank">
+                            <i class="fas fa-eye"></i> View Certificate
+                        </a>
                     </div>
                 </div>
                 {% endfor %}

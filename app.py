@@ -247,10 +247,16 @@ def admin_dashboard():
         return redirect(url_for('admin_login'))
     
     try:
-        # Get only pending certificates
-        pending_certificates = Certificate.query.filter_by(approved=False).all()
+        # Get all certificates grouped by status
+        all_certificates = Certificate.query.order_by(Certificate.upload_date.desc()).all()
+        pending_certificates = [c for c in all_certificates if c.status == 'pending']
+        approved_certificates = [c for c in all_certificates if c.status == 'approved']
+        rejected_certificates = [c for c in all_certificates if c.status == 'rejected']
         
-        return render_template('admin_dashboard.html', certificates=pending_certificates)
+        return render_template('admin_dashboard.html', 
+                             pending_certificates=pending_certificates,
+                             approved_certificates=approved_certificates,
+                             rejected_certificates=rejected_certificates)
     
     except Exception as e:
         flash(f'Database error: {str(e)}', 'error')
@@ -269,6 +275,8 @@ def approve_certificate(certificate_id):
         # Allocate marks based on event
         event = certificate.event
         certificate.marks_allocated = event.max_marks
+        # Add admin remark for student visibility
+        certificate.remarks = f'Approved by admin. Allocated {event.max_marks} marks.'
         
         # Update student's total marks
         student = certificate.student
@@ -293,6 +301,8 @@ def reject_certificate(certificate_id):
         certificate.approved = False
         certificate.status = 'rejected'
         certificate.marks_allocated = 0
+        # Add admin remark for student visibility
+        certificate.remarks = 'Rejected by admin.'
         
         db.session.commit()
         flash('Certificate rejected!', 'success')

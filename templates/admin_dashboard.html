@@ -55,6 +55,22 @@
             font-size: 12px;
             font-weight: 600;
         }
+        .status-approved {
+            background: #d4edda;
+            color: #155724;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-rejected {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
         .btn-approve {
             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             border: none;
@@ -124,12 +140,12 @@
             {% endif %}
         {% endwith %}
 
-        <!-- Certificates Section -->
+        <!-- Pending Certificates Section -->
         <div class="certificates-section">
-            <h3 class="mb-4"><i class="fas fa-file-certificate"></i> Pending Certificates</h3>
+            <h3 class="mb-4"><i class="fas fa-clock"></i> Pending Certificates</h3>
             
-            {% if certificates %}
-                {% for certificate in certificates %}
+            {% if pending_certificates %}
+                {% for certificate in pending_certificates %}
                 <div class="certificate-item">
                     <div class="row align-items-center">
                         <div class="col-md-8">
@@ -171,8 +187,104 @@
             {% else %}
                 <div class="empty-state">
                     <i class="fas fa-inbox"></i>
-                    <h4>No Pending Certificates</h4>
-                    <p>All certificates have been reviewed. Check back later for new submissions.</p>
+                    <p class="text-muted">No pending certificates awaiting approval.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Approved Certificates Section -->
+        <div class="certificates-section">
+            <h3 class="mb-4"><i class="fas fa-check-circle"></i> Approved Certificates</h3>
+            
+            {% if approved_certificates %}
+                {% for certificate in approved_certificates %}
+                <div class="certificate-item" style="border-left: 4px solid #28a745;">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <div class="student-info">
+                                <i class="fas fa-user"></i> {{ certificate.student.username }}
+                            </div>
+                            <div class="event-info mt-2">
+                                <i class="fas fa-calendar-check"></i> {{ certificate.event.description }}
+                            </div>
+                            <div class="upload-date mt-1">
+                                <i class="fas fa-clock"></i> Uploaded: {{ certificate.upload_date.strftime('%d %b %Y, %I:%M %p') }}
+                            </div>
+                            <div class="mt-2">
+                                <small class="text-muted">File: {{ certificate.filename }}</small>
+                            </div>
+                            {% if certificate.remarks %}
+                            <div class="mt-2">
+                                <small class="text-success"><strong>{{ certificate.remarks }}</strong></small>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <span class="status-approved">Approved</span>
+                            <div class="mt-2">
+                                <span class="badge bg-success">+{{ certificate.marks_allocated }} marks</span>
+                            </div>
+                            <div class="mt-2">
+                                <a href="{{ url_for('view_certificate', certificate_id=certificate.id) }}" 
+                                   class="btn btn-info btn-sm" target="_blank">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p class="text-muted">No approved certificates yet.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Rejected Certificates Section -->
+        <div class="certificates-section">
+            <h3 class="mb-4"><i class="fas fa-times-circle"></i> Rejected Certificates</h3>
+            
+            {% if rejected_certificates %}
+                {% for certificate in rejected_certificates %}
+                <div class="certificate-item" style="border-left: 4px solid #dc3545;">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <div class="student-info">
+                                <i class="fas fa-user"></i> {{ certificate.student.username }}
+                            </div>
+                            <div class="event-info mt-2">
+                                <i class="fas fa-calendar-check"></i> {{ certificate.event.description }}
+                            </div>
+                            <div class="upload-date mt-1">
+                                <i class="fas fa-clock"></i> Uploaded: {{ certificate.upload_date.strftime('%d %b %Y, %I:%M %p') }}
+                            </div>
+                            <div class="mt-2">
+                                <small class="text-muted">File: {{ certificate.filename }}</small>
+                            </div>
+                            {% if certificate.remarks %}
+                            <div class="mt-2">
+                                <small class="text-danger"><strong>{{ certificate.remarks }}</strong></small>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <span class="status-rejected">Rejected</span>
+                            <div class="mt-2">
+                                <a href="{{ url_for('view_certificate', certificate_id=certificate.id) }}" 
+                                   class="btn btn-info btn-sm" target="_blank">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p class="text-muted">No rejected certificates.</p>
                 </div>
             {% endif %}
         </div>
