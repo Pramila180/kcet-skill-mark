@@ -133,4 +133,5 @@ def internal_error(e):
     return f'<h1>Internal Server Error</h1><p>{str(e)}</p>', 500
 
 # This is required for Vercel serverless deployment
-app = app
+if __name__ == '__main__':
+    app.run(debug=True)
