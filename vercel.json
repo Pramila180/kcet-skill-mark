@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/test.py",
+      "src": "api/app_with_frontend.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "api/test.py"
+      "dest": "api/app_with_frontend.py"
     }
   ],
   "env": {
