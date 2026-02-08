@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/simple_app.py",
+      "src": "app.py",
       "use": "@vercel/python",
       "config": {
         "maxLambdaSize": "50mb",
@@ -13,7 +13,10 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "api/simple_app.py"
+      "dest": "app.py"
     }
-  ]
+  ],
+  "env": {
+    "FLASK_ENV": "production"
+  }
 }
