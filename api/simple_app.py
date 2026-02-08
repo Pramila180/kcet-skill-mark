@@ -17,7 +17,24 @@ for i in range(1, 201):
 events = [
     {'id': 1, 'description': 'Paper Presentation in Symposium', 'max_marks': 2, 'category': 'academic'},
     {'id': 2, 'description': 'Tech Competitions Participation', 'max_marks': 1, 'category': 'technical'},
-    {'id': 3, 'description': 'NPTEL Online Certification', 'max_marks': 3, 'category': 'certification'}
+    {'id': 3, 'description': 'NPTEL Online Certification', 'max_marks': 3, 'category': 'certification'},
+    {'id': 4, 'description': 'Internship through Placement', 'max_marks': 5, 'category': 'professional'},
+    {'id': 5, 'description': 'SIH Participation', 'max_marks': 3, 'category': 'technical'},
+    {'id': 6, 'description': 'Yoga / Sports / Club Activities Participation', 'max_marks': 2, 'category': 'extracurricular'},
+    {'id': 7, 'description': 'National / District / Zonal Sports Winning', 'max_marks': 4, 'category': 'sports'},
+    {'id': 8, 'description': 'National / District / Zonal Sports Participation', 'max_marks': 2, 'category': 'sports'},
+    {'id': 9, 'description': 'Approved Certification Courses', 'max_marks': 3, 'category': 'certification'},
+    {'id': 10, 'description': 'Entrepreneurship & Startups', 'max_marks': 4, 'category': 'research'},
+    {'id': 11, 'description': 'Niral Thiruvizha Industry Project', 'max_marks': 3, 'category': 'industry'},
+    {'id': 12, 'description': 'National Design Contest', 'max_marks': 3, 'category': 'technical'},
+    {'id': 13, 'description': 'Tech Mag Article Publishing', 'max_marks': 2, 'category': 'publication'},
+    {'id': 14, 'description': 'Paper Presentation & Conference', 'max_marks': 2, 'category': 'academic'},
+    {'id': 15, 'description': 'Professional Chapter Registration', 'max_marks': 1, 'category': 'professional'},
+    {'id': 16, 'description': 'Technical Competition Winning', 'max_marks': 3, 'category': 'technical'},
+    {'id': 17, 'description': 'Paper Presentation in NIT/IIT/PSG', 'max_marks': 3, 'category': 'academic'},
+    {'id': 18, 'description': 'Patent Filing', 'max_marks': 4, 'category': 'research'},
+    {'id': 19, 'description': 'SCI / Scopus Journal Publication', 'max_marks': 5, 'category': 'research'},
+    {'id': 20, 'description': 'Proposal Submission (TNSCST, Hackathon)', 'max_marks': 2, 'category': 'research'}
 ]
 
 @app.route('/')
