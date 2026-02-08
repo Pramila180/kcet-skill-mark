@@ -1,8 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import os
+import sys
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-here')
+# Ensure templates path is correct for Vercel
+template_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'templates')
+app = Flask(__name__, template_folder=template_dir)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-here-change-in-production')
 
 # Simple in-memory data for demo
 students = {
@@ -24,8 +27,8 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        username = request.form.get('username', '')
+        password = request.form.get('password', '')
         
         if username in students and students[username] == password:
             session['student_id'] = username
@@ -35,23 +38,29 @@ def login():
         else:
             flash('Invalid username or password', 'error')
     
-    return render_template('login.html')
+    try:
+        return render_template('login.html')
+    except Exception as e:
+        return f'<h1>Error loading login page</h1><p>{str(e)}</p>', 500
 
 @app.route('/dashboard')
 def dashboard():
     if 'student_id' not in session:
         return redirect(url_for('login'))
     
-    return render_template('dashboard.html', 
-                         student={'username': session['username'], 'total_marks': 0},
-                         events=events, 
-                         certificates=[])
+    try:
+        return render_template('dashboard.html', 
+                             student={'username': session['username'], 'total_marks': 0},
+                             events=events, 
+                             certificates=[])
+    except Exception as e:
+        return f'<h1>Error loading dashboard</h1><p>{str(e)}</p>', 500
 
 @app.route('/admin', methods=['GET', 'POST'])
 def admin_login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        username = request.form.get('username', '')
+        password = request.form.get('password', '')
         
         if username == 'facultycse' and password == 'facultycse123':
             session['admin_logged_in'] = True
@@ -59,14 +68,20 @@ def admin_login():
         else:
             flash('Invalid admin credentials', 'error')
     
-    return render_template('admin_login.html')
+    try:
+        return render_template('admin_login.html')
+    except Exception as e:
+        return f'<h1>Error loading admin login</h1><p>{str(e)}</p>', 500
 
 @app.route('/admin/dashboard')
 def admin_dashboard():
     if not session.get('admin_logged_in'):
         return redirect(url_for('admin_login'))
     
-    return render_template('admin_dashboard.html', certificates=[])
+    try:
+        return render_template('admin_dashboard.html', certificates=[])
+    except Exception as e:
+        return f'<h1>Error loading admin dashboard</h1><p>{str(e)}</p>', 500
 
 @app.route('/logout')
 def logout():
@@ -78,6 +93,15 @@ def logout():
 def admin_logout():
     session.pop('admin_logged_in', None)
     return redirect(url_for('admin_login'))
+
+# Error handlers
+@app.errorhandler(404)
+def not_found(e):
+    return redirect(url_for('login'))
+
+@app.errorhandler(500)
+def internal_error(e):
+    return f'<h1>Internal Server Error</h1><p>{str(e)}</p>', 500
 
 # This is required for Vercel serverless deployment
 app = app
